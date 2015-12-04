@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -39,6 +40,11 @@ public class ControllerOfMainWindow {
     private Tab tabAddEvent;
     @FXML
     private Tab tabOptions;
+
+	@FXML
+	private ScrollPane scroll;
+	@FXML
+	private VBox stackedTitledPanes;
 
     private Controller controller;
 
@@ -87,11 +93,30 @@ public class ControllerOfMainWindow {
             public void handle(ActionEvent actionEvent) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Information");
-                alert.setHeaderText("Remember Me v0.1 beta");
+                alert.setHeaderText("Remind Me v0.1 beta");
                 alert.setContentText("Developer: Ivan Greenfield, 350503, VMSiS, BSUIR");
                 alert.showAndWait();
             }
         });
+		scroll.setMaxWidth(395);
+		stackedTitledPanes.setMaxWidth(380);
+        stackedTitledPanes.setex
+		AnchorPane anchorPane = new AnchorPane();
+		anchorPane.setPrefSize(380, 250);
+		TitledPane titledPane = new TitledPane("Pane 199",  anchorPane);
+        titledPane.setExpanded(false);
+		//titledPane.setPrefSize(380, 250);
+		stackedTitledPanes.getChildren().add(titledPane);
+		stackedTitledPanes.getChildren().add(new TitledPane("Pane 1",  new AnchorPane()));
+		stackedTitledPanes.getChildren().add(new TitledPane("Pane 1",  new AnchorPane()));
+        stackedTitledPanes.getChildren().add(new TitledPane("Pane 1",  new AnchorPane()));
+        stackedTitledPanes.getChildren().add(new TitledPane("Pane 1",  new AnchorPane()));
+        stackedTitledPanes.getChildren().add(new TitledPane("Pane 1",  new AnchorPane()));
+        stackedTitledPanes.getChildren().add(new TitledPane("Pane 1",  new AnchorPane()));
+        stackedTitledPanes.getChildren().add(new TitledPane("Pane 1",  new AnchorPane()));
+        stackedTitledPanes.getChildren().add(new TitledPane("Pane 1",  new AnchorPane()));
+        stackedTitledPanes.getChildren().add(new TitledPane("Pane 1",  new AnchorPane()));
+
 
     }
 

@@ -33,5 +33,12 @@ public class Controller {
     public int changeDate(int year, int month, int day) {
         return model.changeDate(year, month, day);
     }
+	public void setPathToSound(String pathToSound) {
+		model.setPathToSound(pathToSound);
+	}
+	public int addEvent(int yearOfEvent, int monthOfEvent, int dayOfEvent, int hourOfEvent, int minuteOfEvent, String messageOfEvent, String additionalInfo) {
+		model.addEvent(yearOfEvent, monthOfEvent, dayOfEvent, hourOfEvent, minuteOfEvent, messageOfEvent, additionalInfo);
 
+		return 0;
+	}
 }

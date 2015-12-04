@@ -34,7 +34,7 @@ public class MainApp extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception{
 		this.rootStage = primaryStage;
-		this.rootStage.setTitle("Remember Me v0.1 beta");
+		this.rootStage.setTitle("Remind Me v0.1 beta");
 
 		this.initRootWindow();
 		this.initMainWindow();
@@ -46,7 +46,7 @@ public class MainApp extends Application {
         this.controllerOfMainWindow.setController(controller);
         this.controllerOfOptionsWindow.setController(controller);
 		model.setController(controller);
-		model.start();
+		//model.start();
 
 		anchorPaneOfRootWindow.getChildren().add(anchorPaneOfMainWindow);
 

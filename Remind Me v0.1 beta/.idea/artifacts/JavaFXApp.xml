@@ -8,7 +8,7 @@
     </properties>
     <root id="root">
       <element id="archive" name="JavaFXApp.jar">
-        <element id="module-output" name="Remember Me v0.1 beta" />
+        <element id="module-output" name="Remind Me v0.1 beta" />
       </element>
     </root>
   </artifact>
