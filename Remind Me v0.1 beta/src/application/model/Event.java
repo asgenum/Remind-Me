@@ -1,6 +1,8 @@
 package application.model;
 
-class Event {
+import java.io.Serializable;
+
+public class Event implements Serializable{
 	private int yearOfEvent;
 	private int monthOfEvent;
 	private int dayOfEvent;

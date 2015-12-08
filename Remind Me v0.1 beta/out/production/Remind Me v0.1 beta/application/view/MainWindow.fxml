@@ -14,7 +14,7 @@
             <items>
                   <MenuItem fx:id="menuItemOpenListEvents" mnemonicParsing="false" text="Open List of Events" />
                   <MenuItem fx:id="menuItemSaveListEvents" mnemonicParsing="false" text="Save List of Events" />
-              <MenuItem fx:id="menuItemClose" mnemonicParsing="false" text="Close" />
+              <MenuItem fx:id="menuItemClose" mnemonicParsing="false" text="Exit" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
@@ -35,7 +35,49 @@
                <content>
                   <ScrollPane fx:id="scroll" prefHeight="223.0" prefWidth="406.0">
                      <content>
-                        <VBox fx:id="stackedTitledPanes" prefHeight="220.0" prefWidth="400.0" />
+                        <HBox prefHeight="221.0" prefWidth="399.0">
+                           <children>
+                              <TableView fx:id="tableOfEvents" prefHeight="221.0" prefWidth="125.0" style="-fx-border-color: #20b2aa;">
+                                <columns>
+                                  <TableColumn fx:id="tableColumn" prefWidth="109.0" text="Events" />
+                                </columns>
+                              </TableView>
+                              <AnchorPane prefHeight="221.0" prefWidth="300.0" style="-fx-border-color: #20b2aa;">
+                                 <children>
+                                    <Label layoutX="113.0" layoutY="6.0" text="Event Info">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="14.0" layoutY="51.0" text="Date:">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="dateOfEvent" editable="false" layoutX="70.0" layoutY="47.0" prefHeight="27.0" prefWidth="76.0" style="-fx-border-color: #20b2aa; -fx-border-radius: 5px;" />
+                                    <Label layoutX="155.0" layoutY="51.0" text="Time:">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="timeOfEvent" editable="false" layoutX="195.0" layoutY="47.0" prefHeight="25.0" prefWidth="71.0" style="-fx-border-color: #20b2aa; -fx-border-radius: 5px;" />
+                                    <Label layoutX="14.0" layoutY="90.0" text="Message:">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="messageOfEvent" editable="false" layoutX="70.0" layoutY="86.0" prefHeight="25.0" prefWidth="196.0" style="-fx-border-color: #20b2aa; -fx-border-radius: 5px;" />
+                                    <TextField fx:id="additionalInfo" editable="false" layoutX="70.0" layoutY="124.0" prefHeight="25.0" prefWidth="196.0" style="-fx-border-color: #20b2aa; -fx-border-radius: 5px;" />
+                                    <Label layoutX="14.0" layoutY="128.0" text="Info:">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="buttonDeleteEvent" layoutX="106.0" layoutY="170.0" mnemonicParsing="false" style="-fx-border-color: #20b2aa; -fx-border-radius: 5px;" text="Delete Event" />
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </HBox>
                      </content></ScrollPane>
                </content>
           </Tab>

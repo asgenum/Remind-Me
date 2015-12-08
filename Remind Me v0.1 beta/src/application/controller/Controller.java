@@ -38,7 +38,24 @@ public class Controller {
 	}
 	public int addEvent(int yearOfEvent, int monthOfEvent, int dayOfEvent, int hourOfEvent, int minuteOfEvent, String messageOfEvent, String additionalInfo) {
 		model.addEvent(yearOfEvent, monthOfEvent, dayOfEvent, hourOfEvent, minuteOfEvent, messageOfEvent, additionalInfo);
-
+		this.updateListOfEvents();
 		return 0;
+	}
+	public int updateListOfEvents() {
+		controllerOfMainWindow.updateListOfEvents(model.getVectorOfEvents());
+		return 0;
+	}
+	public int getEventInfo(int index) {
+		controllerOfMainWindow.setEventInfo(model.getEvent(index));
+		return 0;
+	}
+	public int deleteEvent(int index) {
+		return model.deleteEvent(index);
+	}
+	public int writeEventListToFile(String pathToFile) {
+		return model.writeEventListToFile(pathToFile);
+	}
+	public int readEventListToFile(String pathToFile) {
+		return model.readEventListFromFile(pathToFile);
 	}
 }

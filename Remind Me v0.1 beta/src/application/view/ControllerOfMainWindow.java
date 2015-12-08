@@ -1,15 +1,22 @@
 package application.view;
 
 import application.controller.Controller;
+import application.model.Event;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.util.Callback;
 
 import java.io.File;
+import java.util.Vector;
 
 public class ControllerOfMainWindow {
 
@@ -44,9 +51,25 @@ public class ControllerOfMainWindow {
 	@FXML
 	private ScrollPane scroll;
 	@FXML
-	private VBox stackedTitledPanes;
+	private TableView<String> tableOfEvents;
+	@FXML
+	private TableColumn<String, String> tableColumn;
+	@FXML
+	private TextField dateOfEvent;
+	@FXML
+	private TextField timeOfEvent;
+	@FXML
+	private TextField messageOfEvent;
+	@FXML
+	private TextField additionalInfo;
+	@FXML
+	private Button buttonDeleteEvent;
+
+	private ObservableList<String> listOfEvents = FXCollections.observableArrayList();
 
     private Controller controller;
+
+	private int lastSelectedEvent;
 
 
     @FXML
@@ -59,7 +82,7 @@ public class ControllerOfMainWindow {
                 fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("List Of Events", "*.ev"));
                 File selectedFile = fileChooser.showOpenDialog(null);
                 if (selectedFile != null) {
-                    //textOfSoundPath.setText(selectedFile.getPath());
+                    controller.readEventListToFile(selectedFile.getPath());
                 }
             }
         });
@@ -71,7 +94,7 @@ public class ControllerOfMainWindow {
                 fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("List Of Events", "*.ev"));
                 File selectedFile = fileChooser.showSaveDialog(null);
                 if (selectedFile != null) {
-                    //textOfSoundPath.setText(selectedFile.getPath());
+					controller.writeEventListToFile(selectedFile.getPath());
                 }
             }
         });
@@ -98,26 +121,40 @@ public class ControllerOfMainWindow {
                 alert.showAndWait();
             }
         });
-		scroll.setMaxWidth(395);
-		stackedTitledPanes.setMaxWidth(380);
-        stackedTitledPanes.setex
-		AnchorPane anchorPane = new AnchorPane();
-		anchorPane.setPrefSize(380, 250);
-		TitledPane titledPane = new TitledPane("Pane 199",  anchorPane);
-        titledPane.setExpanded(false);
-		//titledPane.setPrefSize(380, 250);
-		stackedTitledPanes.getChildren().add(titledPane);
-		stackedTitledPanes.getChildren().add(new TitledPane("Pane 1",  new AnchorPane()));
-		stackedTitledPanes.getChildren().add(new TitledPane("Pane 1",  new AnchorPane()));
-        stackedTitledPanes.getChildren().add(new TitledPane("Pane 1",  new AnchorPane()));
-        stackedTitledPanes.getChildren().add(new TitledPane("Pane 1",  new AnchorPane()));
-        stackedTitledPanes.getChildren().add(new TitledPane("Pane 1",  new AnchorPane()));
-        stackedTitledPanes.getChildren().add(new TitledPane("Pane 1",  new AnchorPane()));
-        stackedTitledPanes.getChildren().add(new TitledPane("Pane 1",  new AnchorPane()));
-        stackedTitledPanes.getChildren().add(new TitledPane("Pane 1",  new AnchorPane()));
-        stackedTitledPanes.getChildren().add(new TitledPane("Pane 1",  new AnchorPane()));
+		tableColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<String, String>, ObservableValue<String>>() {
+			@Override
+			public ObservableValue<String> call(TableColumn.CellDataFeatures<String, String> stringStringCellDataFeatures) {
+				return new ReadOnlyStringWrapper(stringStringCellDataFeatures.getValue());
+			}
+		});
 
+		tableOfEvents.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue observableValue, String oldValue, String newValue) {
+				if (tableOfEvents.getSelectionModel().getSelectedItem() != null) {
+					TableView.TableViewSelectionModel selectionModel = tableOfEvents.getSelectionModel();
+					ObservableList selectedCells = selectionModel.getSelectedCells();
+					TablePosition tablePosition = (TablePosition) selectedCells.get(0);
+					String val = (String) tablePosition.getTableColumn().getCellData(newValue);
+					//System.out.println("Selected Value" + val);
+					System.out.println("Pos " + tablePosition.getRow());
+					controller.getEventInfo(tablePosition.getRow());
+					lastSelectedEvent = tablePosition.getRow();
+				}
+			}
+		});
 
+		buttonDeleteEvent.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				if (lastSelectedEvent >= 0) {
+					controller.deleteEvent(lastSelectedEvent);
+				}
+			}
+		});
+
+		tableColumn.setSortable(false);
+		lastSelectedEvent = -1;
     }
 
     public AnchorPane getAnchorPaneOfMainWindow() {
@@ -143,6 +180,49 @@ public class ControllerOfMainWindow {
         this.labelCurrentTime.setText("Current Time: " + stringHour + ":" + stringMinutes);
         return 0;
     }
+	public int updateListOfEvents(Vector<Event> vectorOfEvents) {
+		this.listOfEvents.clear();
+		this.clearFields();
+		String stringDay, stringMonth, stringHour, stringMinutes, stringDateTime;
+
+		for (int i = 0; i < vectorOfEvents.size(); i++) {
+			stringDay = (vectorOfEvents.elementAt(i).getDayOfEvent() < 10) ? ("0" + vectorOfEvents.elementAt(i).getDayOfEvent()) : (Integer.toString(vectorOfEvents.elementAt(i).getDayOfEvent()));
+			stringMonth = (vectorOfEvents.elementAt(i).getMonthOfEvent() < 10) ? ("0" + vectorOfEvents.elementAt(i).getMonthOfEvent()) : (Integer.toString(vectorOfEvents.elementAt(i).getMonthOfEvent()));
+			stringHour = (vectorOfEvents.elementAt(i).getHourOfEvent() < 10) ? ("0" + vectorOfEvents.elementAt(i).getHourOfEvent()) : (Integer.toString(vectorOfEvents.elementAt(i).getHourOfEvent()));
+			stringMinutes = (vectorOfEvents.elementAt(i).getMinuteOfEvent() < 10) ? ("0" + vectorOfEvents.elementAt(i).getMinuteOfEvent()) : (Integer.toString(vectorOfEvents.elementAt(i).getMinuteOfEvent()));
+
+			stringDateTime = stringDay + "." + stringMonth + "." + vectorOfEvents.elementAt(i).getYearOfEvent() + " " + stringHour + ":" + stringMinutes;
+			this.listOfEvents.add(stringDateTime);
+		}
+
+		this.tableOfEvents.setItems(this.listOfEvents);
+
+		return 0;
+	}
+	public int setEventInfo(Event event) {
+		String stringDay, stringMonth, stringHour, stringMinutes, stringDate, stringTime;
+		stringDay = (event.getDayOfEvent() < 10) ? ("0" + event.getDayOfEvent()) : (Integer.toString(event.getDayOfEvent()));
+		stringMonth = (event.getMonthOfEvent() < 10) ? ("0" + event.getMonthOfEvent()) : (Integer.toString(event.getMonthOfEvent()));
+		stringHour = (event.getHourOfEvent() < 10) ? ("0" + event.getHourOfEvent()) : (Integer.toString(event.getHourOfEvent()));
+		stringMinutes = (event.getMinuteOfEvent() < 10) ? ("0" + event.getMinuteOfEvent()) : (Integer.toString(event.getMinuteOfEvent()));
+		stringDate = stringDay + "." + stringMonth + "." + event.getYearOfEvent();
+		stringTime = stringHour + ":" + stringMinutes;
+
+		this.dateOfEvent.setText(stringDate);
+		this.timeOfEvent.setText(stringTime);
+		this.messageOfEvent.setText(event.getMessageOfEvent());
+		this.additionalInfo.setText(event.getAdditionalInfo());
+
+		return 0;
+	}
+
+	private void clearFields() {
+		dateOfEvent.clear();
+		timeOfEvent.clear();
+		messageOfEvent.clear();
+		additionalInfo.clear();
+		lastSelectedEvent = -1;
+	}
 
     public void setController(Controller controller) {
         this.controller = controller;
